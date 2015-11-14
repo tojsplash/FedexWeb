@@ -12,8 +12,6 @@ import java.sql.Statement;
 
 import java.util.Properties;
 
-
-
 import javax.mail.Message;
 
 import javax.mail.MessagingException;
@@ -26,184 +24,164 @@ import javax.mail.internet.InternetAddress;
 
 import javax.mail.internet.MimeMessage;
 
-
-
 public class SendEmail {
 
+	public static void main(String[] args) {
 
+		final String username = "tojsplash@gmail.com";
 
-public static void main(String [] args){
+		final String password = "tojojoseph001415";
 
+		final String host = "smtp.gmail.com";
 
-final String username = "tojsplash@gmail.com";
+		final int port = 587;
 
-final String password = "tojojoseph001415";
+		Connection conn = null;
 
-final String host = "smtp.gmail.com";
+		String url = "jdbc:mysql://localhost:3306/";
 
-final int port = 587;
+		String dbName = "world";
 
- 
+		String driver = "com.mysql.jdbc.Driver";
 
-Connection conn = null;
+		try {
 
-String url = "jdbc:mysql://localhost:3306/";
+			Class.forName(driver).newInstance();
 
-String dbName = "world"; 
+			conn = DriverManager.getConnection(url + dbName, "root", "1415");
 
-String driver = "com.mysql.jdbc.Driver";
+			System.out.println("DB connected");
 
-try {
+			String Emailids = null;
 
-Class.forName(driver).newInstance();
+			int TrackingID = 0;
 
-conn=DriverManager.getConnection(url+dbName, "root","1415");
+			String sql1 = "SELECT Max(TrackingID) as TrackingID from Shipment_Creation";
 
-System.out.println("DB connected");
+			String sql2 = "SELECT from_Email from Shipment_Creation where TrackingID in (SELECT Max(TrackingID) as TrackingID from Shipment_Creation)";
 
-String Emailids = null;
+			Statement st = null;
 
-int TrackingID = 0;
+			st = conn.createStatement();
 
-String sql1 = "SELECT Max(TrackingID) as TrackingID from Shipment_Creation";
+			ResultSet resultSet1 = st.executeQuery(sql1);
 
-String sql2= "SELECT from_Email from Shipment_Creation where TrackingID in (SELECT Max(TrackingID) as TrackingID from Shipment_Creation)";
+			while (resultSet1.next()) {
 
+				TrackingID = resultSet1.getInt(1);
 
-Statement st = null;
+				System.out.println(TrackingID);
 
-st = conn.createStatement();
+			}
 
+			ResultSet resultSet2 = st.executeQuery(sql2);
 
-ResultSet resultSet1 = st.executeQuery(sql1);
+			while (resultSet2.next()) {
 
-while(resultSet1.next()){
+				Emailids = resultSet2.getString("from_Email");
 
-TrackingID = resultSet1.getInt(1);
+				System.out.println(Emailids);
 
-System.out.println(TrackingID);
+			}
 
-}
+			Properties properties = new Properties();
 
+			properties.put("mail.smtp.auth", "true");
 
-ResultSet resultSet2=st.executeQuery(sql2);
+			properties.put("mail.smtp.starttls.enable", "true");
 
-while(resultSet2.next()){
+			properties.put("mail.smtp.auth", "smtp.gmail.com");
 
-  Emailids=resultSet2.getString("from_Email");
+			properties.put("mail.smtp.port", 587);
 
-System.out.println(Emailids);
+			Session session = Session.getInstance(properties
 
-}
+			, new javax.mail.Authenticator() {
 
- 
+				protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
 
-Properties properties = new Properties();
+					return new javax.mail.PasswordAuthentication(username,
+							password);
 
-properties.put("mail.smtp.auth", "true");
+				}
 
-properties.put("mail.smtp.starttls.enable", "true");
+			});
 
-properties.put("mail.smtp.auth", "smtp.gmail.com");
+			// session.setDebug(true);
 
-properties.put("mail.smtp.port", 587);
+			MimeMessage message = new MimeMessage(session);
 
-Session session = Session.getInstance(properties
+			message.setFrom(new InternetAddress(username));
 
-, new javax.mail.Authenticator(){
+			message.setRecipient(Message.RecipientType.TO, new InternetAddress(
+					Emailids));
 
- 
+			message.setSubject("Tracking number");
 
-protected javax.mail.PasswordAuthentication getPasswordAuthentication(){
+			message.setText("Dear Customer,\n Your shipment Tracking Tracking number is "
+					+ TrackingID);
 
+			Transport transport = session.getTransport("smtp");
 
-return new javax.mail.PasswordAuthentication(username, password);
+			System.out.println("connecting to mail server");
 
- 
+			transport.connect(host, port, username, password);
 
-}
+			transport.sendMessage(message, message.getAllRecipients());
 
-});
+			transport.close();
 
-// session.setDebug(true);
+			System.out.println("message sent successfully");
 
+			message.setRecipient(Message.RecipientType.TO, new InternetAddress(
+					"mkathera@uncc.edu"));
 
+			message.setSubject("Tracking number");
 
-MimeMessage message = new MimeMessage(session);
+			message.setText("Dear Agent,\n A shipment with TrackingID "
+					+ TrackingID
+					+ " has been created for your approval.\n Please do the needful");
 
-message.setFrom(new InternetAddress(username));
+			transport.connect(host, port, username, password);
 
-message.setRecipient(Message.RecipientType.TO, new InternetAddress(Emailids));
+			transport.sendMessage(message, message.getAllRecipients());
 
-message.setSubject("Tracking number");
+			transport.close();
 
-message.setText("Dear Customer,\n Your shipment Tracking Tracking number is " +TrackingID);
+		}
 
-Transport transport = session.getTransport("smtp");
+		catch (MessagingException mex)
 
-System.out.println("connecting to mail server");
+		{
 
-transport.connect (host, port, username, password);
+			throw new RuntimeException(mex);
 
-transport.sendMessage(message, message.getAllRecipients());
+		} catch (SQLException e) {
 
-transport.close(); 
+			// TODO Auto-generated catch block
 
-System.out.println("message sent successfully");
+			e.printStackTrace();
 
+		} catch (InstantiationException e) {
 
+			// TODO Auto-generated catch block
 
-message.setRecipient(Message.RecipientType.TO, new InternetAddress("mkathera@uncc.edu"));
+			e.printStackTrace();
 
-message.setSubject("Tracking number");
+		} catch (IllegalAccessException e) {
 
-message.setText("Dear Agent,\n A shipment with TrackingID " +TrackingID +" has been created for your approval.\n Please do the needful");
+			// TODO Auto-generated catch block
 
-//System.out.println("connecting to mail server");
+			e.printStackTrace();
 
-transport.connect (host, port, username, password);
+		} catch (ClassNotFoundException e) {
 
-transport.sendMessage(message, message.getAllRecipients());
+			// TODO Auto-generated catch block
 
-transport.close(); 
+			e.printStackTrace();
 
+		}
 
-}
-
-catch(MessagingException mex)
-
-{
-
-throw new RuntimeException(mex);
-
-} catch (SQLException e) {
-
-// TODO Auto-generated catch block
-
-e.printStackTrace();
-
-} catch (InstantiationException e) {
-
-// TODO Auto-generated catch block
-
-e.printStackTrace();
-
-} catch (IllegalAccessException e) {
-
-// TODO Auto-generated catch block
-
-e.printStackTrace();
-
-} catch (ClassNotFoundException e) {
-
-// TODO Auto-generated catch block
-
-e.printStackTrace();
-
-}
-
-}
-
-
+	}
 
 }

@@ -40,7 +40,7 @@ public class Package_Creation extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.setContentType("text/number/html");
 		PrintWriter pw = response.getWriter();	
@@ -50,12 +50,15 @@ public class Package_Creation extends HttpServlet {
 		String driver = "com.mysql.jdbc.Driver";
 		
 		try{
+			String id = (String) request.getParameter("name");
+			System.out.println(id);
 			String Item=request.getParameter("Item");
 			String No_of_packages=request.getParameter("NoofPackages");
 			String Packaging_type=request.getParameter("Packagingtype");
 			String Package_Declared_Value=request.getParameter("PackageDeclaredValue");
 			String SCity=request.getParameter("Scity");
 			String DCity=request.getParameter("Dcity");
+			
 			//To address
 			String Company_or_name=request.getParameter("CompanyorName");
 			String Contact=request.getParameter("Contact");
@@ -73,79 +76,18 @@ public class Package_Creation extends HttpServlet {
 			String from_zipcode=request.getParameter("from_Zipcode");
 			String from_Email=request.getParameter("from_Email");
 			String from_Country=request.getParameter("from_Country");
-			
 			String radio=request.getParameter("radio");
-			if (Item == "" || No_of_packages == "" || Package_Declared_Value =="" || Company_or_name == "" || Contact == "" || Address_line1 == "" || Address_line2 == "" || zipcode == "" 
-					|| Email == "" || Country == "" ||  from_Company_or_name == "" || from_Contact == "" || from_Address_line1 == "" || from_Address_line2 == "" ||
-							from_zipcode == "" || from_Email == "" || from_Country == "" ||  radio == "" ){
-
-					//pw.println("Please filljjjhjhjall fields"); 
-
-					}
 			
-			
-			else if(!(Email.contains("@") && ( Email.contains(".com") ||  Email.contains(".net")  
-					|| Email.contains(".in") || Email.contains(".edu")))){
-				
-				
-				//RequestDispatcher RequetsDispatcherObj =request.getRequestDispatcher("/Createpackage.jsp");
-				//RequetsDispatcherObj.forward(request, response);
-			
-			}
-			
-			else if(!(from_Email.contains("@") && ( from_Email.contains(".com") ||  from_Email.contains(".net")  
-					|| from_Email.contains(".in") || from_Email.contains(".edu")))){
-				
-				//RequestDispatcher RequetsDispatcherObj =request.getRequestDispatcher("/Createpackage.jsp");
-				//RequetsDispatcherObj.forward(request, response);
-			
-			}
-			
-			
-	/*		
-			
-			else { 
-
-				if (!Email.contains("@") || !from_Email.contains("@")){
-
-				//pw.println("Enter valid emailid");
-					}
-			
-				else {
-				
-			Class.forName(driver).newInstance();
-			conn=DriverManager.getConnection(url+dbName, "root","1415");
-			pw.println("connected");
-			String sql1 = "INSERT INTO shipment_creation(Item, No_of_packages, Packaging_type, Package_Declared_Value,SCity,DCity,to_Company_or_name,to_Contact,"
-					+ "to_Address_line1,to_Address_line2,to_zipcode,to_Email,to_Country,to_State,from_Company_or_name,from_Contact,from_Address_line1,"
-					+ "from_Address_line2,from_zipcode,from_Email,from_Country,from_State,radio)";
-			String sql2 = "VALUES('"+ Item + "','" + No_of_packages+ "','" + Packaging_type + "','" + Package_Declared_Value + "','"+SCity+"','"+DCity+"',"
-					+ "'"+Company_or_name+"','"+Contact+"','"+Address_line1+"','"+Address_line2+"','"+zipcode+"','"+Email+"','"+Country+"','"+State+"',"
-					+ "'"+from_Company_or_name+"','"+from_Contact+"','"+from_Address_line1+"','"+from_Address_line2+"','"+from_zipcode+"','"+from_Email+"','"+from_Country+"','"+from_State+"','"+radio+"')";
-			
-			String sql = sql1 + sql2;
-			Statement st = conn.createStatement();
-			st.executeUpdate(sql);
-			
-			RequestDispatcher RequetsDispatcherObj =request.getRequestDispatcher("/usehomesuccessfulcreation.jsp");
-			RequetsDispatcherObj.forward(request, response);
-			//pw.println("Your shipment has been successfully added to the Tracking system !!!" );	
-			}			
-			}
-			
-			*/
-			
-			else {
 				
 				Class.forName(driver).newInstance();
 				conn=DriverManager.getConnection(url+dbName, "root","1415");
 				pw.println("connected");
 				String sql1 = "INSERT INTO shipment_creation(Item, No_of_packages, Packaging_type, Package_Declared_Value,SCity,DCity,to_Company_or_name,to_Contact,"
 						+ "to_Address_line1,to_Address_line2,to_zipcode,to_Email,to_Country,from_Company_or_name,from_Contact,from_Address_line1,"
-						+ "from_Address_line2,from_zipcode,from_Email,from_Country,radio,status)";
+						+ "from_Address_line2,from_zipcode,from_Email,from_Country,radio,status,username)";
 				String sql2 = "VALUES('"+ Item + "','" + No_of_packages+ "','" + Packaging_type + "','" + Package_Declared_Value + "','"+SCity+"','"+DCity+"',"
 						+ "'"+Company_or_name+"','"+Contact+"','"+Address_line1+"','"+Address_line2+"','"+zipcode+"','"+Email+"','"+Country+"',"
-						+ "'"+from_Company_or_name+"','"+from_Contact+"','"+from_Address_line1+"','"+from_Address_line2+"','"+from_zipcode+"','"+from_Email+"','"+from_Country+"','"+radio+"','pending_approval')";
+						+ "'"+from_Company_or_name+"','"+from_Contact+"','"+from_Address_line1+"','"+from_Address_line2+"','"+from_zipcode+"','"+from_Email+"','"+from_Country+"','"+radio+"','pending_approval','"+id+"')";
 				
 				String sql = sql1 + sql2;
 				Statement st = conn.createStatement();
@@ -154,27 +96,12 @@ public class Package_Creation extends HttpServlet {
 				RequestDispatcher RequetsDispatcherObj =request.getRequestDispatcher("/usehomesuccessfulcreation.jsp");
 				RequetsDispatcherObj.forward(request, response);
 				
-				
 				   SendEmail.main(null);
-				
-				//SendEmail mail = new SendEmail();
-				//SendEmail.main(null);
-				
-				//mail mail2 = new mail();
-				//mail2.mail1();	
-				
-				}		
-			
-			
-			
 		}
 		catch (Exception e) { 
 			pw.println(e);
 		}
-		}
-	
-	
-	
+		}	
 	}
 
 

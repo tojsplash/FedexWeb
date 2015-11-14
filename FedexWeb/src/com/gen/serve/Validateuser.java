@@ -33,14 +33,14 @@ public class Validateuser extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html");
 		PrintWriter pw = response.getWriter();
 		Connection conn = null;
@@ -49,18 +49,13 @@ public class Validateuser extends HttpServlet {
 		String driver = "com.mysql.jdbc.Driver";
 		String username = "";
 		String password = "";
+		int agent = 0;
 
 		try {
 			String userid = request.getParameter("userid");
 			String pswrd = request.getParameter("pswrd");
 
-			if (userid == "" || pswrd == "" ) {
-				//pw.println("Please fill all fields");
-			}
-
-			 else {
-				 
-
+	 
 							Class.forName(driver).newInstance();
 							conn = (Connection) DriverManager.getConnection(url
 									+ dbName, "root", "1415");
@@ -73,34 +68,29 @@ public class Validateuser extends HttpServlet {
 								
 							     username = rs.getString(3);
 							     password = rs.getString(6);
+							     agent = rs.getInt(8);
+							     
 							    
 							}
 							    if(userid.equals(username)  && pswrd.equals(password)){
-							    //pw.println("Successfull login");
 							    	request.setAttribute("name", username);
-							    RequestDispatcher RequetsDispatcherObj =request.getRequestDispatcher("/userhome.jsp");
-								RequetsDispatcherObj.forward(request, response);
-								
-								//request.setAttribute("name", username);
-								 //RequestDispatcher RequetsDispatcherObj1 =request.getRequestDispatcher("/Createpackage.jsp");
-								//	RequetsDispatcherObj1.forward(request, response);
+							    	
+							    	if(agent == 1){
+							    	RequestDispatcher RequetsDispatcherObj =request.getRequestDispatcher("/agenthome.jsp");
+							    	RequetsDispatcherObj.forward(request, response);
+							    	}
+							    	else{
+							    	RequestDispatcher RequetsDispatcherObj1 =request.getRequestDispatcher("/userhome.jsp");
+							    	RequetsDispatcherObj1.forward(request, response);
+							    	}
 								
 							    }
 							    else{
-							    	//pw.println("Invalid Username/Password");  
-							   	RequestDispatcher RequetsDispatcherObj =request.getRequestDispatcher("/homeinvalid.jsp");
-								RequetsDispatcherObj.forward(request, response);
+							    	  
+							    	RequestDispatcher RequetsDispatcherObj =request.getRequestDispatcher("/homeinvalid.jsp");
+							    	RequetsDispatcherObj.forward(request, response);
 								
-								
-								 
-			 }
-							
-							
-							
-								
-								
-							
-		 }
+							    }
 		} // try end
 
 		catch (Exception e) {

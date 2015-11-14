@@ -38,6 +38,7 @@ session.setAttribute("name", id);
  <img src="packaging.jpg" width="850" height="600" style="float: right"><br>
 <p style="text-indent:3em;"> <input type="button" value="Track Shipment" style = "width: 25em"  onclick="window.location='track.jsp'"/><br>
 <p style="text-indent:3em;"><input type="button" value="Shipment History" style = "width: 25em" onclick="window.location='history.jsp'"/><br>
+<p style="text-indent:3em;"><input type="button" value="Pending Requests" style = "width: 25em" onclick="window.location='pending_requests.jsp'"/><br>
 		
          
              

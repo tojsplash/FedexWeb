@@ -17,11 +17,19 @@
 </head>
 
 <body bgcolor="green">
+
+<%
+
+String id = session.getAttribute("name").toString();
+request.setAttribute("name", id);
+
+%>
+
  
 
 <input type="button" value="logout" style="float:right"onclick="window.location='home.jsp'">
 
-<center><h1>Welcome to Home Mr. <%=  request.getAttribute("name")%> !!!  </h1></center>
+<center><h1>Welcome to Home Mr. <%= id%> !!!  </h1></center>
 
 
 

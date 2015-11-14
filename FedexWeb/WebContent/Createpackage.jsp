@@ -66,15 +66,16 @@ function validateform(){
 
 <form   action="Package_Creation" method="post" name = "Createpackage" onsubmit="return validateform()">
 
-
 <%
-String id = request.getHeader("name").toString();   
-  
-  %>
+
+String id = session.getAttribute("name").toString();
+
+
+%>
+
+<input type="hidden" name="name" value="<%=id%>" />
 
 <input type="button" value="logout" style="float:right"onclick="window.location='home.jsp'">
-
-<center><h1>Welcome to Home Mr. <%=  id %> !!!  </h1></center>
 
 <u><h3>Begin Your Shipment</h3></u>
 <u><h4>What are you Shipping?</h4></u>
