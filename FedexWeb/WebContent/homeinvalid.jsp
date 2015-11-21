@@ -44,7 +44,7 @@ if (userid==null || userid=="" || pswrd==null || pswrd==""){
 
            <center>Username<input type="text" name="userid" style="width: 150px;"/> <br></center> 
 
-           <center>Password<input type="password" name="pswrd" style="width: 150px;"/> <br></center>
+            <center>Password<input type="password" name="pswrd" style="width: 150px;"/><br></center>
            <center><h4>*Invalid Username/Password</h4></center>
              
 

@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.DriverManager;
 import java.sql.Connection;
+import java.sql.ResultSet;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -50,7 +51,10 @@ public class Package_Creation extends HttpServlet {
 		String driver = "com.mysql.jdbc.Driver";
 		
 		try{
-			String id = (String) request.getParameter("name");
+			int agent = 0;
+			int TrackingID = 0;
+			String id ="";
+			 id = (String) request.getParameter("name");
 			System.out.println(id);
 			String Item=request.getParameter("Item");
 			String No_of_packages=request.getParameter("NoofPackages");
@@ -93,10 +97,38 @@ public class Package_Creation extends HttpServlet {
 				Statement st = conn.createStatement();
 				st.executeUpdate(sql);
 				
-				RequestDispatcher RequetsDispatcherObj =request.getRequestDispatcher("/usehomesuccessfulcreation.jsp");
+			
+				String sql3 = "SELECT * from users where username = '"+id+"'";
+				Statement st1 = conn.createStatement();
+				ResultSet rs = st1.executeQuery(sql3);
+				
+				while(rs.next()) {
+					agent = rs.getInt(8);    
+				}
+				
+				if(agent == 1){
+				RequestDispatcher RequetsDispatcherObj =request.getRequestDispatcher("/agenthome1.jsp");
 				RequetsDispatcherObj.forward(request, response);
+				}
+				
+				else{
+					RequestDispatcher RequetsDispatcherObj =request.getRequestDispatcher("/usehomesuccessfulcreation.jsp");
+					RequetsDispatcherObj.forward(request, response);	
+					
+				}
+				
+				String sql4 = "SELECT * FROM shipment_creation ORDER BY TrackingID DESC LIMIT 1";
+				Statement st2 = conn.createStatement();
+				ResultSet rs1 = st2.executeQuery(sql4);
+				
+				while(rs1.next()) {
+					TrackingID = rs1.getInt(1);    
+				}
 				
 				   SendEmail.main(null);
+				   Dijkstra D1 = new Dijkstra();
+				   D1.shortestPath(SCity,DCity,TrackingID);
+				
 		}
 		catch (Exception e) { 
 			pw.println(e);

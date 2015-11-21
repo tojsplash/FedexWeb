@@ -21,7 +21,7 @@
 <%
 
 String id = session.getAttribute("name").toString();
-request.setAttribute("name", id);
+session.setAttribute("name", id);
 
 %>
 

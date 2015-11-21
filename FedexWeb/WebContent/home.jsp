@@ -16,7 +16,8 @@
 
 </head>
 
-<body bgcolor="blue">
+<body bgcolor="">
+<body background="http://www.clipartsheep.com/images/898/package-delivery-898479.jpeg">
 
 
 <script>  

@@ -69,7 +69,7 @@ function validateform(){
 <%
 
 String id = session.getAttribute("name").toString();
-
+session.setAttribute("name", id);
 
 %>
 

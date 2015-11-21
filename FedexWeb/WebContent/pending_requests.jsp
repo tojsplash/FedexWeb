@@ -2,10 +2,15 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"                                                    "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<input type="button" value="logout" style="float:right"onclick="window.location='home.jsp'">
+<center><h1>   Pending Requests  </h1></center>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Authorize Requests</title>
 </head>
+<body bgcolor="">
+<body background="http://www.wallpaperup.com/uploads/wallpapers/2013/11/14/175148/big_thumb_7d1e5024866338a55c886a955d2213f2.jpg">
 <body>
+<center>
 <form method="post" action="RequestAuthorise">
 <table border="2">
 <tr>
@@ -58,5 +63,6 @@ while(rs.next())
 <input type="submit" value ="Submit">
 <input type="reset" value ="Reset">
 </form>
+</center>
 </body>
 </html> 

@@ -23,7 +23,7 @@
 
 <%
 
-String id = request.getAttribute("name").toString();
+String id = session.getAttribute("name").toString();
 session.setAttribute("name", id);
 
 %>
@@ -39,7 +39,7 @@ session.setAttribute("name", id);
 <p style="text-indent:3em;"> <input type="button" value="Track Shipment" style = "width: 25em"  onclick="window.location='track.jsp'"/><br>
 <p style="text-indent:3em;"><input type="button" value="Shipment History" style = "width: 25em" onclick="window.location='history.jsp'"/><br>
 <p style="text-indent:3em;"><input type="button" value="Pending Requests" style = "width: 25em" onclick="window.location='pending_requests.jsp'"/><br>
-<p style="text-indent:3em;"><input type="button" value="Move Sipments" style = "width: 25em" onclick="window.location='move_shipments.jsp'"/><br>		
+<h3>Your shipment has been successfully added to the Tracking system !!!</h3>		
          
              
 
